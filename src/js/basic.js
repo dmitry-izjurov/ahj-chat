@@ -1,9 +1,9 @@
 import Inspector from './Inspector';
-import { elemWrapper } from './utils';
+import { elemForm } from './utils';
 
 const inspector = new Inspector();
-inspector.getServer();
 
-elemWrapper.addEventListener('click', (e) => {
-  inspector.getAction(e.target);
+elemForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  inspector.getName();
 });

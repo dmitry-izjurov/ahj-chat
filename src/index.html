@@ -4,13 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Мой чат</title>
 </head>
 <body>
   <div class="wrapper">
-    <button class="button button_add">Добавить тикет</button>
-    <ul class="list">
-    </ul>
+    <form class="form">
+      <label class="field-group">
+        <span class="field-label text_form">Выберите псевдоним</span>
+        <input type="text" name="text" class="field" minlength="2" maxlength="30" required>
+      </label>
+      <button class="form__button">Продолжить</button>
+    </form>
   </div>
+  <!-- <div class="wrapper-chat">
+    <main class="chat">
+      <div class="box-chat">
+        <div class="wrapper-message" data-id="Alexandra">
+          <div class="box-message">
+            <span class="nick-time">Alexandra, 01:15 21.03.2019</span>
+            <p class="message__text">I can't sleep...</p>
+          </div>
+        </div>
+        <div class="wrapper-message" data-id="Dmitry" data-type="You">
+          <div class="box-message">
+            <span class="nick-time">Dmitry, 07:01 22.03.2019</span>
+            <p class="message__text">I can't sleep...</p>
+          </div>
+        </div>
+      </div>
+      <input type="text" class="field_chat" placeholder="Type you message here">
+    </main>
+    <aside class="names-users">
+      <div class="box-user" data-id="Alexandra">
+        <div class="box-user__foto"></div>
+        <span class="user-name">Alexandra</span>
+      </div>
+      <div class="box-user" data-id="Petr">
+        <div class="box-user__foto"></div>
+        <span class="user-name">Petr</span>
+      </div>
+      <div class="box-user" data-id="Ivan">
+        <div class="box-user__foto"></div>
+        <span class="user-name">Ivan</span>
+      </div>
+      <div class="box-user" data-id="Dmitry" data-type="You">
+        <div class="box-user__foto"></div>
+        <span class="user-name">You</span>
+      </div>
+    </aside>
+  </div> -->
 </body>
 </html>
