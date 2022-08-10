@@ -4,12 +4,7 @@ const Koa = require('koa');
 const koaBody = require('koa-body');
 const cors = require('@koa/cors');
 const WS = require('ws');
-const contacts = ['Alexandra', 'Petr', 'Ivan'];
-
-function getDate() {
-  let dateTransaction = new Date();
-  return `${dateTransaction.toLocaleString()}`;
-}
+const contacts = [];
 
 const app = new Koa();
 app.use(cors());
@@ -23,15 +18,10 @@ app.use(koaBody({
 
 app.use(async (ctx) => { 
   const method  = ctx.request.querystring;
-  // let id;
-  // if (method) {
-  //   const num = Number(method.split('id=')[1]);
-  //   if (num) id = num;
-  // }
-
+  const newName = ctx.request.body.text;
+  
   switch (method) {
     case 'method=getName':
-      const newName = ctx.request.body.text;
       if (!contacts.find(a => a === newName)) {
         contacts.push(newName);
         ctx.response.body = {response: contacts, name: newName};
@@ -39,54 +29,34 @@ app.use(async (ctx) => {
         ctx.response.body = {response: `Псевдоним ${newName} уже занят`};
       }
       return;
+    
+    case 'method=removeUser':
+      const removeUser = ctx.request.body.key
+      const removeUserIndex = contacts.findIndex(a => a === removeUser);
+      if (removeUserIndex !== -1) contacts.splice(removeUserIndex, 1);
+      return;
 
     default:
       ctx.response.status = 404;
       return;
     }
-
-});
-
-
-const ws = new WS('ws://localhost:7070/ws');
-
-ws.addEventListener('open', () => {
-console.log('connected');
-// After this we can send messages
-ws.send('hello!');
-});
-ws.addEventListener('message', (evt) => {
-// handle evt.data
-console.log(evt);
-});
-ws.addEventListener('close', (evt) => {
-console.log('connection closed', evt);
-// After this we can't send messages
-});
-ws.addEventListener('error', () => {
-console.log('error');
 });
 
 const server = http.createServer(app.callback());
 const wsServer = new WS.Server({ server });
 
-// wsServer.on('connection', (ws, req) => {
-// const errCallback = (err) => {
-//   if (err) {
-//     // TODO: handle error
-//   }
-// }
+wsServer.on('connection', (ws, req) => {
+  const errCallback = (err) => {
+    if (err) {
+      // TODO: handle error
+    }
+  }
 
-// ws.on('message', msg => {
-// console.log('msg');
-
-// ws.send('response', errCallback);
-// });
-
-// ws.send('welcome', errCallback);
-// });
+  ws.on('message', msg => {
+    Array.from(wsServer.clients).filter(a => a.readyState === WS.OPEN).forEach(o => o.send(msg.toString(), errCallback));
+  });
+  
+  ws.send(JSON.stringify({welcome: 'welcome'}), errCallback);
+});
 
 server.listen(port);
-
-// const server = http.createServer(app.callback()).listen(port);
-
